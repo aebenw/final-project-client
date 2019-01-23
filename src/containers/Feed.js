@@ -6,6 +6,7 @@ import {getContent} from '../store/actions/feed'
 //Components
 import User from '../components/user/user'
 import {TitleAuthor} from '../components/links/Author'
+import FeedContent from '../components/feed/FeedContent'
 import Spinner from '../components/Spinner'
 
 //Containers
@@ -23,13 +24,15 @@ class Feed extends Component {
 
   componentDidMount() {
     if(this.props.currentUser.email){
-      return this.props.getContent(this.props.currentUser.id)
+      const {currentUser, getContent} = this.props;
+      return getContent(currentUser.id)
     }
   }
 
   componentDidUpdate(prevProps){
-    if (!prevProps.currentUser.email && this.props.currentUser.email) {
-      this.props.getContent(this.props.currentUser.id)
+    const {currentUser, getContent} = this.props;
+    if (!prevProps.currentUser.email && currentUser.email) {
+      getContent(currentUser.id)
     }
   }
 
@@ -109,15 +112,13 @@ class Feed extends Component {
 
 
   render(){
-    const { content, noFeed } = this.props
+    const { onDisplay, noFeed } = this.props
     return (
       <Fragment >
         <div id="home-feed" className="row">
           <div className="col-lg-10">
-            {content ?
-              <Fragment>
-                {this.sortContent()}
-              </Fragment>
+            {onDisplay ?
+              <FeedContent content={onDisplay} />
                 : null
             }
             {noFeed ?
@@ -131,7 +132,7 @@ class Feed extends Component {
               : null
             }
 
-            {!noFeed && !content ? <Spinner/>
+            {!noFeed && !onDisplay ? <Spinner/>
               : null }
             </div>
           </div>
@@ -162,7 +163,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.users.currentUser,
-    content: state.feed.feedContent,
+    onDisplay: state.feed.onDisplay,
     noFeed: state.feed.noFeed
   }
 }

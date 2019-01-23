@@ -27,14 +27,16 @@ import {FriendContainer, NotFriendContainer} from '../containers/UserContainer'
 class App extends Component {
 
   componentDidMount(){
-    if (token && !this.props.currentUser.name && (this.props.history.location.pathname !== '/')) {
+    const {name, email} = this.props.currentUser;
+    const {pathname} = this.props.history.location
+    if (token && !name && (pathname !== '/')) {
       this.props.fetchWithToken(token)
-      .then(() => this.props.history.push(this.props.history.location.pathname))
-    } else if (token && !this.props.currentUser.name ) {
+      .then(() => this.props.history.push(pathname))
+    } else if (token && !name ) {
       this.props.fetchWithToken(token)
       .then(() => this.props.history.push('/home'))
     }
-    else if (this.props.currentUser.email) {
+    else if (email) {
       this.props.history.push('/home')
     } else {
       this.props.history.push('/')
@@ -46,29 +48,24 @@ class App extends Component {
     return (
       <Fragment>
         <Fragment>
-          {currentUser.email ?
-            <LoggedInNav currentUser={currentUser}/>
-          : <LoggedOutNav />}
+          {currentUser.email ? <LoggedInNav currentUser={currentUser}/> : <LoggedOutNav />}
           <div className="big-container">
-          <Route exact path='/' render={routerProps => <Welcome {...routerProps}/>} />
-          <Route exact path='/signup' render={routerProps => <SignUp {...routerProps}/>} />
-          <Route exact path='/login' render={routerProps => <Login {...routerProps}/>} />
-          <Route exact path='/home' render={routerProps => <Feed {...routerProps}/>} />
-          <Route exact path='/profile' render={routerProps => <Profile {...routerProps}/>} />
-          <Route  exact path={`/channels/new`} render={routerProps => <NewChannel {...routerProps}/>} />
-          <Route  exact path={`/blocks/new`} render={routerProps => <NewBlock {...routerProps}/>} />
-          <Route  exact path={`/users/:name`} component={UserShow} />
-          <Route  exact path={`/friends`} render={routerProps => <FriendContainer {...routerProps}/>} />
-          <Route  exact path={`/explore/people`} render={routerProps => <NotFriendContainer {...routerProps}/>} />
-          <Route  path={`/channel/:channelID`} render={routerProps => <ChannelShow {...routerProps}/>} />
-          <Route  path={`/block/:blockID`} render={routerProps => <BlockShow {...routerProps}/>} />
-          <Route  path={`/profile/edit`} render={routerProps => <Edit {...routerProps}/>} />
-        </div>
+            <Route exact path='/' render={routerProps => <Welcome {...routerProps}/>} />
+            <Route exact path='/signup' render={routerProps => <SignUp {...routerProps}/>} />
+            <Route exact path='/login' render={routerProps => <Login {...routerProps}/>} />
+            <Route exact path='/home' render={routerProps => <Feed {...routerProps}/>} />
+            <Route exact path='/profile' render={routerProps => <Profile {...routerProps}/>} />
+            <Route  exact path={`/channels/new`} render={routerProps => <NewChannel {...routerProps}/>} />
+            <Route  exact path={`/blocks/new`} render={routerProps => <NewBlock {...routerProps}/>} />
+            <Route  exact path={`/users/:name`} component={UserShow} />
+            <Route  exact path={`/friends`} render={routerProps => <FriendContainer {...routerProps}/>} />
+            <Route  exact path={`/explore/people`} render={routerProps => <NotFriendContainer {...routerProps}/>} />
+            <Route  path={`/channel/:channelID`} render={routerProps => <ChannelShow {...routerProps}/>} />
+            <Route  path={`/block/:blockID`} render={routerProps => <BlockShow {...routerProps}/>} />
+            <Route  path={`/profile/edit`} render={routerProps => <Edit {...routerProps}/>} />
+          </div>
         </Fragment>
-
-
-        </Fragment>
-
+      </Fragment>
     );
   }
 }
@@ -76,7 +73,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.users.currentUser
-    }
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {

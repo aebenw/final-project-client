@@ -1,4 +1,4 @@
-import React,{ Fragment } from "react";
+import React, { Fragment } from "react";
 import { connect } from 'react-redux';
 
 import Friendship from './Friendship'
@@ -21,7 +21,10 @@ const FeedContent = ({content}) => {
           case 'ADD_BLOCK_TO_OWN_CHANNEL':
           return <AddBlock action={action} />
 
-          case '"ADD_OTHER_BLOCK_TO_CHANNEL"':
+          case "ADD_OTHER_BLOCK_TO_CHANNEL":
+          return <AddBlock action={action} />
+
+          case "ADD_BLOCK_TO_OTHER_CHANNEL":
           return <AddBlock action={action} />
 
           case "FOLLOW_CHANNEL":

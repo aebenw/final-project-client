@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { CardAuthor } from '../links/Author'
 
 const Block = ({block, blockShow, userShow}) => {
+  // debugger
   return(
     <div  className="card user-card" >
       <Link to={{pathname:`/block/${block.id}`, state : block.id}}>

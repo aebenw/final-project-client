@@ -4,7 +4,7 @@ export const token = localStorage.getItem("jwt");
 // export const SHORT_URL = "murmuring-oasis-50773.herokuapp.com"
 
 //API URL for Local
-export const SHORT_URL = "249d3e9f.ngrok.io"
+export const SHORT_URL = "623c5e07.ngrok.io"
 
 export const URL = "https://" + SHORT_URL + "/api/v1/"
 export const HEADERS = {

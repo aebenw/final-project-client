@@ -2,6 +2,7 @@ import { URL, HEADERS } from '../../constants'
 
 const contentAction = (content) => ({type: "INITIAL_FETCH", feed: content.feed, initial: content.initial})
 const noFeed = (content) => ({type: "NO_FEED", content})
+export const moreContent = () => ({type: "MORE_CONTENT"})
 
 export const getContent = (id) => {
   return (dispatch) => {

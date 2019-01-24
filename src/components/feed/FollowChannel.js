@@ -1,23 +1,22 @@
 import React, {Fragment} from 'react'
 import User from '../user/user'
-import {TitleAuthor} from '../links/Author'
+import {TitleAuthor} from '../links/Author';
+import ChannelContainer from '../../containers/ChannelContainer';
+
 
 
 const FollowChannel = ({action}) => {
-  debugger
   return(
     <Fragment>
       <div className="row">
         <div className="col-12-lg">
           <center>
             <TitleAuthor user={action.actor} />
-            <h3> became friends with</h3>
+            <h3> Started following</h3>
           </center>
         </div>
       </div>
-      {/* <div id="feed" className="row">
-      {x.content.map(c => <User user={c} userShow={userShow}/>)}
-      </div> */}
+      <ChannelContainer channels={[action.subjectt]} />
     </Fragment>
   )
 }

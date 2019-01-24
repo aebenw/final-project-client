@@ -14,8 +14,7 @@ import BlockContainer from './BlockContainer'
 import ChannelContainer from './ChannelContainer'
 
 //ACTIONS
-import { selectBlock } from '../store/actions/blocks'
-import { showChannel } from '../store/actions/channels'
+import { moreContent } from '../store/actions/feed'
 import {fetchUserInfo} from '../store/actions/users'
 
 
@@ -27,6 +26,7 @@ class Feed extends Component {
       const {currentUser, getContent} = this.props;
       return getContent(currentUser.id)
     }
+    window.addEventListener("scroll", this.fetchMoreContent);
   }
 
   componentDidUpdate(prevProps){
@@ -36,87 +36,24 @@ class Feed extends Component {
     }
   }
 
-  sortContent = () => {
-    const { content, userShow } = this.props
-    return content.feed.map(x => {
-      if (x.type === "friends" && x.content.length){
-        return (
-          <Fragment>
-          <div className="row">
-            <div className="col-12-lg">
-          <center>
-            <TitleAuthor user={x.user} />
-          <h3> became friends with</h3></center>
-          </div>
-          </div>
-          <div id="feed" className="row">
-          {x.content.map(c => <User user={c} userShow={userShow}/>)}
-          </div>
-          </Fragment>
-        )
+  fetchMoreContent = () => {
+    const {onDisplay, moreContent} = this.props
+    if(onDisplay){
+      let tenPercent = document.body.scrollHeight -(document.body.scrollHeight * .1);
 
-      }
-      else if (x.type === "followed_channels" && x.content.length){
-        return (
-          <Fragment>
-          <div className="row">
-            <div className="col-12-lg">
-          <center>
-            <TitleAuthor user={x.user} />
-            <h3> started following these channels</h3>
-          </center>
-          </div>
-          </div>
+      if(window.pageYOffset + window.screen.height > tenPercent){
+        this.props.moreContent();
+    }
+    }
 
-          <ChannelContainer channels={x.content}/>
-
-          </Fragment>
-        )
-
-      }
-      else if(x.type === "blocks" && x.content.length){
-        return (
-          <Fragment>
-          <div className="row">
-            <div className="col-12-lg">
-          <center>
-          <TitleAuthor user={x.user} />
-          <h3>made blocks</h3>
-        </center>
-          </div>
-          </div>
-          <BlockContainer blocks={x.content}/>
-          </Fragment>
-        )
-
-      } else if (x.type === "channels" && x.content.length){
-        return (
-          <Fragment>
-          <div className="row">
-            <div className="col-12-lg">
-          <center><Link to={{pathname: `/users/${x.user.id}`, state: x.user.id}}>
-          <h3 onClick={() => userShow(x.user.id)}>{x.user.name}</h3>
-          </Link>
-          <h3> made channels</h3>
-        </center>
-          </div>
-          </div>
-
-          <ChannelContainer channels={x.content}/>
-
-          </Fragment>
-        )}
-      })
   }
-
-
 
   render(){
     const { onDisplay, noFeed } = this.props
     return (
       <Fragment >
-        <div id="home-feed" className="row">
-          <div className="col-lg-10">
+        <div id="home-feed" className="row" onScroll={() => this.fetchMoreContent()}>
+          <div className="col-lg-12" style={{"width": "100%"}}>
             {onDisplay ?
               <FeedContent content={onDisplay} />
                 : null
@@ -148,15 +85,11 @@ const mapDispatchToProps = (dispatch) => {
     getContent: (id) => {
       return dispatch(getContent(id))
     },
-    channelShow: (channel) => {
-      return dispatch(showChannel(channel))
-    },
-    userShow: (user) => {
-      return dispatch(fetchUserInfo(user))
-    },
-    blockShow: (block) => {
-    return dispatch(selectBlock(block))
-    }
+    moreContent: () => dispatch(moreContent())
+
+    // getMoreContent: (id) => {
+    //   return dispatch(getMoreContent())
+    // }
   }
 }
 

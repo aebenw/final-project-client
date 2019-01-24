@@ -10,6 +10,7 @@ import { fetchBlock } from '../store/actions/blocks'
 
 
 const BlockContainer = ({blocks, userShow, blockShow}) => {
+  // debugger
   return (
   <div id="feed" className="row">
     {blocks.map(block => <Block key={block.id} block={block} blockShow={blockShow}/>

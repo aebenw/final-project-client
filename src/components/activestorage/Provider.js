@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import ActiveStorageProvider from 'react-activestorage-provider'
 
-import {NGROK} from '../../constants'
+import {SHORT_URL} from '../../constants'
 
 const ASProvider = ({method, model}) => {
   let fileName
@@ -11,7 +11,7 @@ const ASProvider = ({method, model}) => {
     endpoint={{
     path: `api/vi/${model}`,
     model: model,
-    host: NGROK,
+    host: SHORT_URL,
     attribute: fileName,
     method: 'POST'
     }}

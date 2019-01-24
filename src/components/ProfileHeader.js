@@ -12,7 +12,7 @@ import Title from './header/Title'
 import FollowUnfollow from './header/FollowUnfollow'
 import Edit from './buttons/Edit'
 
-import { NO_PROFILE } from '../constants'
+import { DEFAULT_PROFILE_PIC } from '../constants'
 
 
 const header = ({ user, currentUser, addFriend, rmFriend, friendly }) => {
@@ -20,27 +20,23 @@ const header = ({ user, currentUser, addFriend, rmFriend, friendly }) => {
   if (user.id !== currentUser.id){ isFriend = friendly() }
   return (
     <Fragment>
-
       <div className="container profile">
         <div style={{"position":"relative"}}>
-        <div className="row">
-          <Title content={user.name} />
-          { user.id === currentUser.id ?
-                <Edit content={"profile"} />
-          :
-          <Fragment>
-            { isFriend ?
-            <FollowUnfollow method={() => rmFriend(currentUser.id, user.id)} content={'Remove Friend'}  /> :
-            <FollowUnfollow method={() => addFriend(currentUser.id, user.id)} content={'Add Friend'} />
+          <div className="row">
+            <Title content={user.name} />
+            { user.id === currentUser.id ?
+                  <Edit content={"profile"} />
+            :
+            <Fragment>
+              { isFriend ?
+              <FollowUnfollow method={() => rmFriend(currentUser.id, user.id)} content={'Remove Friend'}  /> :
+              <FollowUnfollow method={() => addFriend(currentUser.id, user.id)} content={'Add Friend'} />
+            }
+          </Fragment>
           }
-        </Fragment>
-        }
-      </div>
-      </div>
-
-        <ProfilePic src={user.file ? user.file : NO_PROFILE}/>
-
-
+          </div>
+        </div>
+        <ProfilePic src={user.file ? user.file : DEFAULT_PROFILE_PIC}/>
         <div className="row">
             {user.description ?
             <Column title={"Bio"} content={user.description}/>
@@ -48,7 +44,7 @@ const header = ({ user, currentUser, addFriend, rmFriend, friendly }) => {
             <Column title={"Bio"} content={'No Bio available'}/>
             }
         </div>
-    </div>
+      </div>
     </Fragment>
   )
 

@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react'
-import User from '../user/user'
 import {TitleAuthor} from '../links/Author'
 import BlockContainer from '../../containers/BlockContainer'
 import ChannelContainer from '../../containers/ChannelContainer'
@@ -7,7 +6,6 @@ import ChannelContainer from '../../containers/ChannelContainer'
 
 
 const AddBlock = ({action}) => {
-  // debugger
   return(
     <Fragment>
       <div className="row">

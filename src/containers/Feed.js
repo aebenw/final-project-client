@@ -4,26 +4,20 @@ import { withRouter, Link } from 'react-router-dom'
 import {getContent} from '../store/actions/feed'
 
 //Components
-import User from '../components/user/user'
-import {TitleAuthor} from '../components/links/Author'
+
 import FeedContent from '../components/feed/FeedContent'
 import Spinner from '../components/Spinner'
 
-//Containers
-import BlockContainer from './BlockContainer'
-import ChannelContainer from './ChannelContainer'
-
 //ACTIONS
 import { moreContent } from '../store/actions/feed'
-import {fetchUserInfo} from '../store/actions/users'
 
 
 class Feed extends Component {
 
 
   componentDidMount() {
-    if(this.props.currentUser.email){
-      const {currentUser, getContent} = this.props;
+    const {onDisplay, currentUser, getContent} = this.props
+    if(currentUser.email && !onDisplay){
       return getContent(currentUser.id)
     }
     window.addEventListener("scroll", this.fetchMoreContent);

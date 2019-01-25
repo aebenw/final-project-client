@@ -48,7 +48,9 @@ class App extends Component {
     return (
       <Fragment>
         <Fragment>
+
           {currentUser.email ? <LoggedInNav currentUser={currentUser}/> : <LoggedOutNav />}
+
           <div className="big-container">
             <Route exact path='/' render={routerProps => <Welcome {...routerProps}/>} />
             <Route exact path='/signup' render={routerProps => <SignUp {...routerProps}/>} />

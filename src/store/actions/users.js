@@ -7,6 +7,9 @@ const addFriendToCurr = (user) => ({type: "ADD_FRIEND", user})
 const addCurrUserAsFriend = () => ({type: "ADD_CURR_AS_FRIEND"})
 const rmFriendFromCurr = (user) => ({type: "RM_FRIEND", user})
 const rmCurrUserAsFriend = () => ({type: "RM_CURR_AS_FRIEND"})
+const logOutAction = () => ({type: "LOGOUT_USER"})
+const clearFeed = () => ({type: "CLEAR_FEED"})
+
 
 export function loginUser(user) {
   return (dispatch) => {
@@ -24,6 +27,18 @@ export function loginUser(user) {
      }
     })
   }
+}
+
+export function logOutUser(body) {
+  return(dispatch) => {
+    return fetch(URL + '/logout', {
+      method: "PATCH",
+      headers: HEADERS,
+      body: JSON.stringify(body)
+    }).then(() => dispatch(logOutAction()))
+    .then(() => dispatch(clearFeed()))
+  }
+
 }
 
 

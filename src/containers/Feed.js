@@ -1,7 +1,8 @@
 import React,{Fragment, Component} from 'react';
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import {getContent} from '../store/actions/feed'
+import _ from 'lodash'
 
 //Components
 
@@ -14,13 +15,16 @@ import { moreContent } from '../store/actions/feed'
 
 class Feed extends Component {
 
-
+  constructor(){
+    super()
+      this.debounceScrollFuntion = _.debounce(this.fetchMoreContent, 300)
+  }
   componentDidMount() {
     const {onDisplay, currentUser, getContent} = this.props
     if(currentUser.email && !onDisplay){
       return getContent(currentUser.id)
     }
-    window.addEventListener("scroll", this.fetchMoreContent);
+    window.addEventListener("scroll", this.debounceScrollFuntion);
   }
 
   componentDidUpdate(prevProps){
@@ -30,40 +34,54 @@ class Feed extends Component {
     }
   }
 
+  // debounceScrollFuntion = () => {
+  //   return (_.debounce(this.fetchMoreContent, 300))
+  // }
+
   fetchMoreContent = () => {
-    const {onDisplay, moreContent} = this.props
+    const {onDisplay, getContent, currentUser} = this.props
     if(onDisplay){
       let tenPercent = document.body.scrollHeight -(document.body.scrollHeight * .1);
 
       if(window.pageYOffset + window.screen.height > tenPercent){
-        this.props.moreContent();
-    }
-    }
+        getContent(currentUser.id)
 
+      }
+    }
+  }
+  componentWillUnmount(){
+    console.log("hello")
+    window.removeEventListener('scroll', this.debounceScrollFuntion)
   }
 
   render(){
-    const { onDisplay, noFeed } = this.props
+    const { onDisplay, noMoreContent } = this.props
     return (
       <Fragment >
-        <div id="home-feed" className="row" onScroll={() => this.fetchMoreContent()}>
+        <div id="home-feed" className="row" onScroll={() => _.debounce(this.fetchMoreContent, 500)}>
           <div className="col-lg-12" style={{"width": "100%"}}>
             {onDisplay ?
               <FeedContent content={onDisplay} />
                 : null
             }
-            {noFeed ?
-              <Fragment>
+            {noMoreContent ?
+                <div className="row">
+                  <div className="col-12-lg">
+                    <center><h3>{noMoreContent}</h3></center>
+                  </div>
+                </div>
+              : null
+            }
+            {/* {noFeed ?
                 <div className="row">
                   <div className="col-12-lg">
                     <center><h3>{noFeed}</h3></center>
                   </div>
                 </div>
-              </Fragment>
               : null
-            }
+            } */}
 
-            {!noFeed && !onDisplay ? <Spinner/>
+            {!noMoreContent && !onDisplay ? <Spinner/>
               : null }
             </div>
           </div>
@@ -78,12 +96,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getContent: (id) => {
       return dispatch(getContent(id))
-    },
-    moreContent: () => dispatch(moreContent())
-
-    // getMoreContent: (id) => {
-    //   return dispatch(getMoreContent())
-    // }
+    }
   }
 }
 
@@ -91,7 +104,8 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.users.currentUser,
     onDisplay: state.feed.onDisplay,
-    noFeed: state.feed.noFeed
+    noFeed: state.feed.noFeed,
+    noMoreContent: state.feed.noMoreContent
   }
 }
 

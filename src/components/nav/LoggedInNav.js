@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import {logOutUser} from '../../store/actions/users'
+
 class LoggedInNav extends Component {
 
   state = {}
@@ -10,9 +12,19 @@ class LoggedInNav extends Component {
 
 
   delteJWT = () => {
+    const {history, logOutUser, currentUserID, onDisplay} = this.props
     localStorage.removeItem("jwt")
-    this.props.logOutAction()
-    return this.props.history.push('/')
+    const seenActivitiesIDS = onDisplay.map(activity => {
+      return activity.id
+    })
+    const body = {
+      user: {
+        id: currentUserID,
+        seen_activities: seenActivitiesIDS
+      }
+    }
+    logOutUser(body).then(history.push('/'))
+
   }
 
   render(){
@@ -62,10 +74,19 @@ class LoggedInNav extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logOutAction: () => dispatch({ type: "LOGOUT_USER"})
+    logOutUser: (body) => {
+      return dispatch(logOutUser(body))
+    }
+  }
+}
+
+const mapStateToProps = (state) => {
+  return{
+    onDisplay: state.feed.onDisplay,
+    currentUserID: state.users.currentUser.id,
   }
 }
 
 
 
-export default withRouter (connect(null, mapDispatchToProps)(LoggedInNav))
+export default withRouter (connect(mapStateToProps, mapDispatchToProps)(LoggedInNav))

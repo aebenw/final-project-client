@@ -1,17 +1,20 @@
 export default function feedReducer(state={}, action){
   switch(action.type){
-    case "INITIAL_FETCH":
-    return {...state, allContent: action.feed, onDisplay: action.initial, noFeed: null}
+    case "FETCH_CONTENT":
 
-    case "MORE_CONTENT":
-    
-    let contentCopy = [...state.allContent]
-    let moreContent = contentCopy.splice(-10)
-    let updatedFeed = [...state.onDisplay, ...moreContent]
-    return {...state, allContent: contentCopy, onDisplay: updatedFeed, noFeed: null}
+    // let updatedFeed = [...state.onDisplay, ...action.feed]
+    // debugger
+    let updatedFeed = state.onDisplay ? [...state.onDisplay, ...action.feed] : action.feed
+    return {...state, onDisplay: updatedFeed, noFeed: null, noMoreContent: null}
+
+    case "NO_MORE_CONTENT":
+    return {...state,  noMoreContent: action.content}
 
     case "NO_FEED":
-    return {...state, feedContent: null, noFeed: action.content}
+    return {...state, onDisplay: null, noFeed: action.content}
+
+    case "CLEAR_FEED":
+    return {...state, onDisplay: null, noMoreContent: null, noFeed: null}
 
 
     default:

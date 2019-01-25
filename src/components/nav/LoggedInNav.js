@@ -14,9 +14,12 @@ class LoggedInNav extends Component {
   delteJWT = () => {
     const {history, logOutUser, currentUserID, onDisplay} = this.props
     localStorage.removeItem("jwt")
-    const seenActivitiesIDS = onDisplay.map(activity => {
-      return activity.id
-    })
+    let seenActivitiesIDS = [];
+    if(onDisplay.length){
+       seenActivitiesIDS = onDisplay.map(activity => {
+        return activity.id
+      })
+    }
     const body = {
       user: {
         id: currentUserID,

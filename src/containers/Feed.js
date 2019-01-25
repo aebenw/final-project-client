@@ -25,7 +25,6 @@ class Feed extends Component {
       window.addEventListener("scroll", this.debounceScrollFuntion)
       return getContent(currentUser.id)
     }
-    // window.addEventListener("scroll", this.debounceScrollFuntion);
   }
 
   componentDidUpdate(prevProps){
@@ -39,13 +38,11 @@ class Feed extends Component {
 
   fetchMoreContent = () => {
     const {onDisplay, getContent, currentUser} = this.props
-    // if(onDisplay){
       let tenPercent = document.body.scrollHeight -(document.body.scrollHeight * .1);
 
       if(window.pageYOffset + window.screen.height > tenPercent){
         getContent(currentUser.id)
 
-      // }
     }
   }
   componentWillUnmount(){

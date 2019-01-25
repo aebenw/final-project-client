@@ -17,9 +17,7 @@ class EditUser extends Component {
       user: {
         id: props.currentUser.id,
         name: props.currentUser.name,
-        description: props.currentUser.description,
-        profile: ''
-      },
+        description: props.currentUser.description      },
     }
   }
 

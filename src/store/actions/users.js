@@ -88,8 +88,9 @@ export function fetchUserInfo(user){
 }
 
 export function editUser(info, id){
+  debugger
   return (dispatch) => {
-    return fetch(URL + `users/${id}`, {
+    return fetch(URL + `users/${info.user.id}`, {
       method: "PATCH",
       headers: HEADERS,
       body: JSON.stringify(info)

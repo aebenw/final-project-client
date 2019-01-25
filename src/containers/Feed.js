@@ -17,40 +17,38 @@ class Feed extends Component {
 
   constructor(){
     super()
-      this.debounceScrollFuntion = _.debounce(this.fetchMoreContent, 300)
+      this.debounceScrollFuntion = _.debounce(this.fetchMoreContent, 200)
   }
   componentDidMount() {
     const {onDisplay, currentUser, getContent} = this.props
     if(currentUser.email && !onDisplay){
+      window.addEventListener("scroll", this.debounceScrollFuntion)
       return getContent(currentUser.id)
     }
-    window.addEventListener("scroll", this.debounceScrollFuntion);
+    // window.addEventListener("scroll", this.debounceScrollFuntion);
   }
 
   componentDidUpdate(prevProps){
     const {currentUser, getContent} = this.props;
     if (!prevProps.currentUser.email && currentUser.email) {
       getContent(currentUser.id)
+      window.addEventListener("scroll", this.debounceScrollFuntion)
     }
   }
 
-  // debounceScrollFuntion = () => {
-  //   return (_.debounce(this.fetchMoreContent, 300))
-  // }
 
   fetchMoreContent = () => {
     const {onDisplay, getContent, currentUser} = this.props
-    if(onDisplay){
+    // if(onDisplay){
       let tenPercent = document.body.scrollHeight -(document.body.scrollHeight * .1);
 
       if(window.pageYOffset + window.screen.height > tenPercent){
         getContent(currentUser.id)
 
-      }
+      // }
     }
   }
   componentWillUnmount(){
-    console.log("hello")
     window.removeEventListener('scroll', this.debounceScrollFuntion)
   }
 

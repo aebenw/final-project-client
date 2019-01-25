@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import {CardAuthor} from '../links/Author'
+import { fetchUserInfo } from '../../store/actions/users'
 
 import { DEFAULT_PROFILE_PIC } from '../../constants'
+
+// import
 
 
 
@@ -80,4 +83,12 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(User)
+const mapDispatch = (dispatch) => {
+  return {
+      userShow: (user) => {
+      return dispatch(fetchUserInfo(user))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatch)(User)

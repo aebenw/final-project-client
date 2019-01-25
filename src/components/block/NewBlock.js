@@ -19,9 +19,10 @@ class NewBlock extends Component {
       name: '',
       content: '',
       user_id: this.props.currentUser.id,
+      channel:  this.props.currentChannel.id,
       file: ''
     },
-    channels:  [this.props.currentChannel.id],
+
     success: false
   }}
 

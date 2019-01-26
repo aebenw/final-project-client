@@ -39,13 +39,12 @@ export default function userReducer(state = {currentUser: {}}, action){
         return {...state, userShow: {...state.userShow, friends: userShowFriend}}
 
       case "ADD_FOLLOWED_CHANNEL":
-      let followed_channels = [...state.currentUser.channel_follow, action.channel]
-
-      return  {...state, currentUser: {...state.currentUser, channel_follow: followed_channels}};
+      let followed_channels = [...state.currentUser.subscribed_channels, action.channel]
+      return  {...state, currentUser: {...state.currentUser, subscribed_channels: followed_channels}};
 
       case "RM_FOLLOWED_CHANNEL":
-      let filteredFollow = state.currentUser.channel_follow.filter(x => x.id !== action.channel.id)
-      return  {...state, currentUser: {...state.currentUser, channel_follow: filteredFollow}};
+      let filteredFollow = state.currentUser.subscribed_channels.filter(x => x.id !== action.channel.id)
+      return  {...state, currentUser: {...state.currentUser, subscribed_channels: filteredFollow}};
 
       case "DELETE_CHANNEL":
         let filtered = state.currentUser.channels.filter(x => x.id !== action.channelId)

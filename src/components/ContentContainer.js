@@ -16,7 +16,7 @@ const UsContentContainer = ({view, user, currentUserId}) => {
 
   } else if(view === "Followed Channels"){
     return (
-      <ChannelContainer channels={user.channel_follow}/>
+      <ChannelContainer channels={user.subscribed_channels}/>
     )
   }
 }

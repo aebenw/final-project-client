@@ -17,7 +17,7 @@ class Feed extends Component {
 
   constructor(){
     super()
-      this.debounceScrollFuntion = _.debounce(this.fetchMoreContent, 200)
+      this.debounceScrollFuntion = _.debounce(this.fetchMoreContent, 220)
   }
   componentDidMount() {
     const {onDisplay, currentUser, getContent} = this.props
